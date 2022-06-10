@@ -38,7 +38,7 @@ export default new VueRouter({
     {
       //params传参
       name: 'Search',
-      path: '/search/:keyword',
+      path: '/search/:keyword?',//路径里面的?意味着params这个参数可传可不传
       component: Search,
       meta: {
         show: false,

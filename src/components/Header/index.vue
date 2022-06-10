@@ -66,9 +66,16 @@ export default {
       //1.模板字符串传参
       // this.$router.push(`/search/${this.keyword}?k=${this.keyword.toUpperCase()}`);
       //2.对象传参
+      // this.$router.push({
+      //   name: "Search",
+      //   params: { keyword: this.keyword },
+      //   query: { k: this.keyword.toUpperCase() },
+      // });
+      // 3.params 参数可以传递也可以不传递,但是如果传递的是空字符串,如何解决?
+      // 使用undefind解决:params参数可以传递,不传递(空的字符串)
       this.$router.push({
         name: "Search",
-        params: { keyword: this.keyword },
+        params: { keyword: "" || undefined },
         query: { k: this.keyword.toUpperCase() },
       });
     },
