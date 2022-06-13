@@ -1,6 +1,15 @@
-const { defineConfig } = require('@vue/cli-service');
+const {defineConfig} = require('@vue/cli-service');
 module.exports = defineConfig({
   transpileDependencies: true,
   // 关闭eslint代码检测功能
-  lintOnSave: false
+  lintOnSave: false,
+
+  //代理跨域
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://gmall-h5-api.atguigu.cn',
+      },
+    },
+  },
 });
