@@ -100,7 +100,8 @@ export default {};
   margin: 0 auto;
 
   .sortList {
-    height: 464px;
+    // height: 464px;
+    height: 510px;
     padding-left: 210px;
 
     .center {

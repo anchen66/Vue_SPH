@@ -101,6 +101,7 @@ ol {
 a {
   text-decoration: none;
   color: #666;
+  text-decoration: none;
 }
 
 
@@ -148,7 +149,6 @@ html {
 
 a:link:hover {
   color: rgb(79, 76, 212) !important;
-  text-decoration: underline;
 }
 
 /* 清除浮动 */
