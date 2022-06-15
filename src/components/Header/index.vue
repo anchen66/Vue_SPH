@@ -73,11 +73,16 @@ export default {
       // });
       // 3.params 参数可以传递也可以不传递,但是如果传递的是空字符串,如何解决?
       // 使用undefind解决:params参数可以传递,不传递(空的字符串)
-      this.$router.push({
-        name: "Search",
-        params: { keyword: "" || undefined },
-        query: { k: this.keyword.toUpperCase() },
-      });
+
+      //判断.如果搜索的时候有query参数,也一起带过去
+      if (this.$route.query) {
+        let location = {
+          name: "Search",
+          params: { keyword: this.keyword || undefined },
+        };
+        location.query = this.$route.query;
+        this.$router.push(location);
+      }
     },
   },
 };

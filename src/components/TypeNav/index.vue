@@ -1,47 +1,58 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <div @mouseleave="leaveIndex">
+      <div @mouseleave="leaveShow" @mouseenter="enterShow">
         <h2 class="all">全部商品分类</h2>
         <!-- 三级联动 -->
-        <div class="sort">
-          <div class="all-sort-list2">
-            <div
-              class="item"
-              v-for="(c1, index) in categoryList"
-              :key="c1.categoryId"
-              :class="{ cur: currentIndex == index }"
-            >
-              <h3 @mouseenter="changeIndex(index)">
-                <a href="">{{ c1.categoryName }}</a>
-              </h3>
+        <transition name="sort">
+          <div class="sort" v-show="show">
+            <div class="all-sort-list2" @click="goSearch">
               <div
-                class="item-list clearfix"
-                :style="{ display: currentIndex == index ? 'block' : 'none' }"
+                class="item"
+                v-for="(c1, index) in categoryList"
+                :key="c1.categoryId"
+                :class="{ cur: currentIndex == index }"
               >
+                <h3 @mouseenter="changeIndex(index)">
+                  <a
+                    :data-categoryName="c1.categoryName"
+                    :data-category1Id="c1.categoryId"
+                    >{{ c1.categoryName }}</a
+                  >
+                </h3>
                 <div
-                  class="subitem"
-                  v-for="(c2, index) in c1.categoryChild"
-                  :key="c2.categoryId"
+                  class="item-list clearfix"
+                  :style="{ display: currentIndex == index ? 'block' : 'none' }"
                 >
-                  <dl class="fore">
-                    <dt>
-                      <a href="">{{ c2.categoryName }}</a>
-                    </dt>
-                    <dd>
-                      <em
-                        v-for="(c3, index) in c2.categoryChild"
-                        :key="c3.categoryId"
-                      >
-                        <a href="">{{ c3.categoryName }}</a>
-                      </em>
-                    </dd>
-                  </dl>
+                  <div
+                    class="subitem"
+                    v-for="c2 in c1.categoryChild"
+                    :key="c2.categoryId"
+                  >
+                    <dl class="fore">
+                      <dt>
+                        <a
+                          :data-categoryName="c2.categoryName"
+                          :data-category2Id="c2.categoryId"
+                          >{{ c2.categoryName }}</a
+                        >
+                      </dt>
+                      <dd>
+                        <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+                          <a
+                            :data-categoryName="c3.categoryName"
+                            :data-category3Id="c3.categoryId"
+                            >{{ c3.categoryName }}</a
+                          >
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </transition>
       </div>
       <nav class="nav">
         <a href="###">服装城</a>
@@ -59,17 +70,26 @@
 
 <script>
 import { mapState } from "vuex";
+//全部引入
+// import _ from "lodash";
+//按需引入
+import throttle from "lodash/throttle";
 export default {
   name: "TypeNav",
   data() {
     return {
       //存储用户鼠标移上哪一个一级分类
       currentIndex: -1,
+      show: true,
     };
   },
   //组件挂载完毕:可以向服务器发请求
   mounted() {
-    this.$store.dispatch("categoryList");
+    //当组件挂载完毕,让show属性变为false
+    //如果不是Home路由组建,将我们的TypeNav进行隐藏
+    if (this.$route.path != "/home") {
+      this.show = false;
+    }
   },
   computed: {
     //右侧需要的是一个函数,当使用这个计算属性的时候,右侧函数会立即执行一次
@@ -79,17 +99,60 @@ export default {
     }),
   },
   methods: {
+    //#region
     //鼠标进入修改响应式数据currentIndex属性
-    changeIndex(index) {
-      //index:鼠标移上某一个一级分类的索引值
-      //正常情况(用户慢慢的操作):鼠标进入,每一个一级分类h3,都会触发鼠标进入事件
-      //非正常情况(用户操作很快):本身全部的一级分类都应该触发鼠标进入事件,但是经过测试,只有部分h3触发了
-      //就是由于用户行为过快,导致浏览器反应不过来.如果当前回调函数中有大量业务,有可能出现卡顿现象
+    // changeIndex(index) {
+    //   //index:鼠标移上某一个一级分类的索引值
+    //   //正常情况(用户慢慢的操作):鼠标进入,每一个一级分类h3,都会触发鼠标进入事件
+    //   //非正常情况(用户操作很快):本身全部的一级分类都应该触发鼠标进入事件,但是经过测试,只有部分h3触发了
+    //   //就是由于用户行为过快,导致浏览器反应不过来.如果当前回调函数中有大量业务,有可能出现卡顿现象
+    //   this.currentIndex = index;
+    // },
+    //#endregion
+
+    //throttle回调函数别用箭头函数,可能会出现上下文的this问题
+    //节流
+    changeIndex: throttle(function (index) {
       this.currentIndex = index;
-    },
+    }, 50),
     //一级分类鼠标移出的事件回调
-    leaveIndex() {
+    leaveShow() {
       this.currentIndex = -1;
+      //当鼠标离开的时候让商品分类列表进行隐藏
+      if (this.$route.path != "/home") {
+        this.show = false;
+      }
+    },
+    // 点击链接跳转实现
+    goSearch(e) {
+      //最好的解决方法:编程式导航+事件委派
+      //利用事件委派存在一些问题:1.点击一定就是a标签么  2.如何获取参数[1,2,3级分类的产品的名字,id]
+      //第一个问题:把子节点当中a标签,我加上自定义属性data-categoryName,拥有这个属性的必然就是a标签
+      let { categoryname, category1id, category2id, category3id } =
+        e.target.dataset;
+      if (categoryname) {
+        //整理路由跳转的参数
+        let location = { name: "Search" };
+        let query = { categoryName: categoryname };
+        if (category1id) {
+          query.category1Id = category1id;
+        } else if (category2id) {
+          query.category2Id = category2id;
+        } else {
+          query.category3Id = category3id;
+        }
+        //判断:如果路由跳转的时候,带有params参数,捎带params传过去
+        if (this.$route.params) {
+          location.params = this.$route.params;
+          //整理完参数
+          location.query = query;
+          //路由跳转
+          this.$router.push(location);
+        }
+      }
+    },
+    enterShow() {
+      this.show = true;
     },
   },
 };
@@ -144,11 +207,14 @@ export default {
             font-size: 14px;
             font-weight: 400;
             overflow: hidden;
-            padding: 0 20px;
             margin: 0;
 
             a {
               color: #333;
+              display: block;
+              width: 170px;
+              height: 100%;
+              padding: 0 20px;
             }
           }
 
@@ -210,6 +276,19 @@ export default {
           background-color: skyblue;
         }
       }
+    }
+    //过渡动画的样式
+    //过渡动画开始状态(进入)
+    .sort-enter {
+      height: 0;
+    }
+
+    .sort-enter-to {
+      height: 510px;
+    }
+
+    .sort-enter-active {
+      transition: all 0.5s linear;
     }
   }
 }
