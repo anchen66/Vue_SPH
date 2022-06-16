@@ -6,8 +6,7 @@
     <Recommend></Recommend>
     <Rank></Rank>
     <Like></Like>
-    <FLoor></FLoor>
-    <FLoor></FLoor>
+    <FLoor v-for="floor in floorList" :key="floor.id" :list="floor"></FLoor>
     <Brand></Brand>
   </div>
 </template>
@@ -19,9 +18,19 @@ import Rank from "@/pages/Home/Rank";
 import Like from "@/pages/Home/Like";
 import FLoor from "@/pages/Home/Floor";
 import Brand from "@/pages/Home/Brand";
+import { mapState } from "vuex";
 
 export default {
   components: { ListContainer, Recommend, Rank, Like, FLoor, Brand },
+  mounted() {
+    //派发action,获取 floor组件的数组
+    this.$store.dispatch("getFloorList");
+  },
+  computed: {
+    ...mapState({
+      floorList: (state) => state.home.floorList,
+    }),
+  },
 };
 </script>
 

@@ -27,13 +27,13 @@
         <li>
           <div class="img-item">
             <p class="tab-pic">
-              <a href="#">
+              <a href="javascript:;">
                 <img src="./images/1.jpg" />
               </a>
             </p>
             <div class="tab-info">
               <div class="info-title">
-                <a href="#"
+                <a href="javascript:;"
                   >【官网价直降1100】Apple iPhone 8 Plus 256GB 银色
                   移动联通电信4G手机</a
                 >
@@ -43,13 +43,13 @@
           </div>
           <div class="img-item">
             <p class="tab-pic">
-              <a href="#">
+              <a href="javascript:;">
                 <img src="./images/1.jpg" />
               </a>
             </p>
             <div class="tab-info">
               <div class="info-title">
-                <a href="#"
+                <a href="javascript:;"
                   >【官网价直降1100】Apple iPhone 8 Plus 256GB 银色
                   移动联通电信4G手机</a
                 >
@@ -59,13 +59,13 @@
           </div>
           <div class="img-item">
             <p class="tab-pic">
-              <a href="#">
+              <a href="javascript:;">
                 <img src="./images/1.jpg" />
               </a>
             </p>
             <div class="tab-info">
               <div class="info-title">
-                <a href="#"
+                <a href="javascript:;"
                   >【官网价直降1100】Apple iPhone 8 Plus 256GB 银色
                   移动联通电信4G手机</a
                 >
@@ -75,13 +75,13 @@
           </div>
           <div class="img-item">
             <p class="tab-pic">
-              <a href="#">
+              <a href="javascript:;">
                 <img src="./images/1.jpg" />
               </a>
             </p>
             <div class="tab-info">
               <div class="info-title">
-                <a href="#"
+                <a href="javascript:;"
                   >【官网价直降1100】Apple iPhone 8 Plus 256GB 银色
                   移动联通电信4G手机</a
                 >

@@ -10,3 +10,5 @@ export const reqCategoryList = () => requests({url: '/product/getBaseCategoryLis
 
 //获取banner(Home首页轮播图接口)
 export const reqGetBannerList = () => mockRequest.get('/banner');
+
+export const reqFloorList = () => mockRequest.get('/floor');

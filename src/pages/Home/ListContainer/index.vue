@@ -3,10 +3,14 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
+        <div class="swiper-container" ref="mySwiper">
           <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img src="./images/banner1.jpg" />
+            <div
+              class="swiper-slide"
+              v-for="carousel in bannerList"
+              :key="carousel.id"
+            >
+              <img :src="carousel.imgUrl" />
             </div>
           </div>
           <!-- 如果需要分页器 -->
@@ -92,16 +96,59 @@
 
 <script>
 import { mapState } from "vuex";
+import Swiper from "swiper";
 export default {
   name: "",
   mounted() {
     //派发action:通过Vuex发起ajax请求,将数据存储在仓库中
     this.$store.dispatch("getBannerList");
+    //在new Swiper实例之前,页面中结构必须得有[现在把new Swiper实例放在mounted这里发现不行]
+    //因为dispatch当中涉及到异步语句,导致v-for遍历的时候结构还没有完全加载,所以没有用
+
+    //#region
+    // var mySwiper = new Swiper(".swiper", {
+    //   loop: true, // 循环模式选项
+    //   // 如果需要分页器
+    //   pagination: {
+    //     el: ".swiper-pagination",
+    //     clickable: true,
+    //   },
+    //   // 如果需要前进后退按钮
+    //   navigation: {
+    //     nextEl: ".swiper-button-next",
+    //     prevEl: ".swiper-button-prev",
+    //   },
+    // });
+    //#endregion
   },
   computed: {
     ...mapState({
       bannerList: (state) => state.home.bannerList,
     }),
+  },
+  watch: {
+    //监听bannerList数据的变化:因为这条数据发生过改变---由空数组变为数组里面有四个元素
+    bannerList: {
+      handler(newValue, oldValue) {
+        //现在通过watch监听bannerList属性的属性值的变化
+        //如果执行handler方法,代表组件实例身上这个属性的属性已经有了[数组:四个元素]
+        this.$nextTick(() => {
+          var mySwiper = new Swiper(this.$refs.mySwiper, {
+            loop: true, // 循环模式选项
+            // 如果需要分页器
+            pagination: {
+              el: ".swiper-pagination",
+              clickable: true,
+            },
+            // 如果需要前进后退按钮
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+          });
+        });
+      },
+    },
   },
 };
 </script>
