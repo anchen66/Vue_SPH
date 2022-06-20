@@ -67,7 +67,7 @@ export default new VueRouter({
       path: '/search/:keyword?',//路径里面的?意味着params这个参数可传可不传
       component: Search,
       meta: {
-        show: false,
+        show: true,
       }
     },
     //重定向,在项目跑起来的时候,访问/,立马让他定向到首页

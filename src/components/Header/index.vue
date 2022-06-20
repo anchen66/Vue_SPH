@@ -37,6 +37,7 @@
             id="autocomplete"
             class="input-error input-xxlarge"
             v-model="keyword"
+            @keyup.enter="goSearch"
           />
           <button
             class="sui-btn btn-xlarge btn-danger"
@@ -84,6 +85,12 @@ export default {
         this.$router.push(location);
       }
     },
+  },
+  mounted() {
+    //通过全局事件总线清楚关键字
+    this.$bus.$on("clear", () => {
+      this.keyword = "";
+    });
   },
 };
 </script>
