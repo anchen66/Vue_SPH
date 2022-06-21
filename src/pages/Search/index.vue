@@ -78,12 +78,9 @@
               >
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a
-                      href="item.html"
-                      target="_bslank"
-                    >
+                    <router-link :to="`/detail/${good.id}`">
                       <img :src="good.defaultImg" />
-                    </a>
+                    </router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -120,9 +117,9 @@
           </div>
           <!-- 分页器:测试阶段,这里的数据将来需要替换的 -->
           <Pagination
-            :pageNo='1'
-            :pageSize='10'
-            :total='91'
+            :pageNo='searchParams.pageNo'
+            :pageSize='searchParams.pageSize'
+            :total='total'
             :continues='5'
           />
         </div>
@@ -133,7 +130,7 @@
 
 <script>
 import SearchSelector from "./SearchSelector/SearchSelector";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "Search",
   data() {
@@ -174,13 +171,20 @@ export default {
     //在发请求之前带给服务器参数[searchParams参数发生变化有数值带给服务器]
     this.getData();
     this.$bus.$on("getTradeMack", (trademark) => {
+      this.searchParams.pageNo = 1;
       this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
       this.getData();
     });
     this.$bus.$on("getAttrInfo", (props) => {
+      this.searchParams.pageNo = 1;
       if (this.searchParams.props.indexOf(props) == -1) {
         this.searchParams.props.push(props);
       }
+      this.getData();
+    });
+    //获取分页器当前页数的事件
+    this.$bus.$on("getPageNo", (pageNo) => {
+      this.searchParams.pageNo = pageNo;
       this.getData();
     });
   },
@@ -199,6 +203,10 @@ export default {
     isAsc() {
       return this.searchParams.order.indexOf("asc") != -1;
     },
+    //获取search模块展示的产品一共有多少条
+    ...mapState({
+      total: (state) => state.search.searchList.total,
+    }),
   },
   methods: {
     //向服务器发送请求获取search模块的数据(根据参数不同返回不同的数据进行展示)

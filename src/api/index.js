@@ -28,3 +28,6 @@ export const reqFloorList = () => mockRequest.get('/floor');
 //当前这个函数需要传参
 //当前这个接口,给服务器传递参数params,至少只一个空对象
 export const reGetSearchInfo = (params) => requests({url: '/list', method: 'post', data: params});
+
+//获取产品详情信息的接口  URL:/api/item/{ skuId }    GET    
+export const reqGoodsInfo = (skuId) => requests({url: `/item/${skuId}`, method: 'get'});
