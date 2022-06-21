@@ -16,9 +16,9 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom />
+          <Zoom :skuImageList='skuImageList' />
           <!-- 小图列表 -->
-          <ImageList />
+          <ImageList :skuImageList='skuImageList' />
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
@@ -63,41 +63,17 @@
           <div class="choose">
             <div class="chooseArea">
               <div class="choosed"></div>
-              <dl>
-                <dt class="title">选择颜色</dt>
+              <dl
+                v-for="(spuSaleAttr) in spuSaleAttrList"
+                :key="spuSaleAttr.id"
+              >
+                <dt class="title">选择{{spuSaleAttr.saleAttrName}}</dt>
                 <dd
-                  changepirce="0"
-                  class="active"
-                >金色</dd>
-                <dd changepirce="40">银色</dd>
-                <dd changepirce="90">黑色</dd>
-              </dl>
-              <dl>
-                <dt class="title">内存容量</dt>
-                <dd
-                  changepirce="0"
-                  class="active"
-                >16G</dd>
-                <dd changepirce="300">64G</dd>
-                <dd changepirce="900">128G</dd>
-                <dd changepirce="1300">256G</dd>
-              </dl>
-              <dl>
-                <dt class="title">选择版本</dt>
-                <dd
-                  changepirce="0"
-                  class="active"
-                >公开版</dd>
-                <dd changepirce="-1000">移动版</dd>
-              </dl>
-              <dl>
-                <dt class="title">购买方式</dt>
-                <dd
-                  changepirce="0"
-                  class="active"
-                >官方标配</dd>
-                <dd changepirce="-240">优惠移动版</dd>
-                <dd changepirce="-390">电信优惠版</dd>
+                  :class="{active:spuSaleAttrValue.isChecked==1}"
+                  v-for="(spuSaleAttrValue) in spuSaleAttr.spuSaleAttrValueList"
+                  :key="spuSaleAttrValue.id"
+                  @click="changeActive(spuSaleAttrValue,spuSaleAttr.spuSaleAttrValueList)"
+                >{{spuSaleAttrValue.saleAttrValueName}}</dd>
               </dl>
             </div>
             <div class="cartWrap">
@@ -116,7 +92,7 @@
                 >-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:;">加入购物车</a>
               </div>
             </div>
           </div>
@@ -394,8 +370,8 @@
 </template>
 
 <script>
-import ImageList from "./ImageList/ImageList";
-import Zoom from "./Zoom/Zoom";
+import ImageList from "./ImageList";
+import Zoom from "./Zoom";
 import { mapGetters } from "vuex";
 
 export default {
@@ -408,7 +384,19 @@ export default {
     this.$store.dispatch("getGoodInfo", this.$route.params.skuId);
   },
   computed: {
-    ...mapGetters(["categoryView", "skuInfo"]),
+    ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),
+    skuImageList() {
+      return this.skuInfo.skuImageList || [];
+    },
+  },
+  methods: {
+    // 产品售卖属性值切换高亮
+    changeActive(saleAttrValue, arr) {
+      arr.forEach((item) => {
+        item.isChecked = "0";
+      });
+      saleAttrValue.isChecked = "1";
+    },
   },
 };
 </script>
