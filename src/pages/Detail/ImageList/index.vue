@@ -30,6 +30,8 @@ export default {
   methods: {
     changeCurrentIndex(index) {
       this.currentIndex = index;
+      //通知兄弟组件当前的索引值为几
+      this.$bus.$emit("getIndex", this.currentIndex);
     },
   },
   props: ["skuImageList"],

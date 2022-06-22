@@ -81,18 +81,22 @@
                 <input
                   autocomplete="off"
                   class="itxt"
+                  v-model.number="skuNum"
+                  @change="changeSkuNum"
                 >
                 <a
                   href="javascript:"
                   class="plus"
+                  @click="skuNum++"
                 >+</a>
                 <a
                   href="javascript:"
                   class="mins"
+                  @click="skuNum>1?skuNum--:skuNum=1"
                 >-</a>
               </div>
               <div class="add">
-                <a href="javascript:;">加入购物车</a>
+                <a @click="addShopCar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -380,6 +384,12 @@ export default {
     ImageList,
     Zoom,
   },
+  data() {
+    return {
+      //购买产品的个数
+      skuNum: 1,
+    };
+  },
   mounted() {
     this.$store.dispatch("getGoodInfo", this.$route.params.skuId);
   },
@@ -396,6 +406,24 @@ export default {
         item.isChecked = "0";
       });
       saleAttrValue.isChecked = "1";
+    },
+    //表单元素修改产品个数
+    changeSkuNum() {
+      if (this.skuNum <= 0) {
+        this.skuNum = 1;
+      } else {
+        this.skuNum = Math.ceil(this.skuNum);
+      }
+    },
+    //加入购物车存储的回调函数
+    addShopCar() {
+      //1.发请求:将产品加入到数据库(通知服务器)
+      this.$store.dispatch("addOrUpdateShopCart", {
+        skuId: this.$route.params.skuId,
+        skuNum: this.skuNum,
+      });
+      //2.服务器存储成功:进行路由跳转,传递参数
+      //3.失败:给用户进行提示
     },
   },
 };
