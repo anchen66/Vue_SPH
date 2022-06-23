@@ -432,7 +432,7 @@ export default {
         //在路由跳转的时候还需要将产品的xinxi带给AddCartSuccess路由组件
         //产品信息的数据[比较复杂:skuInfo],通过会话存储(不持久化,会话结束了之后数据再消失)
         //本地存储|会话存储,一般存储的是字符串
-        sessionStorage.setItem("SKUINFO");
+        sessionStorage.setItem("SKUINFO", JSON.stringify(this.skuInfo));
         this.$router.push({
           name: "AddCartSuccess",
           query: { skuNum: this.skuNum },

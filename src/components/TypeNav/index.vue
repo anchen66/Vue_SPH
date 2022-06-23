@@ -69,26 +69,26 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 //全部引入
 // import _ from "lodash";
 //按需引入
-import throttle from "lodash/throttle";
+import throttle from 'lodash/throttle'
 export default {
-  name: "TypeNav",
+  name: 'TypeNav',
   data() {
     return {
       //存储用户鼠标移上哪一个一级分类
       currentIndex: -1,
       show: true,
-    };
+    }
   },
   //组件挂载完毕:可以向服务器发请求
   mounted() {
     //当组件挂载完毕,让show属性变为false
     //如果不是Home路由组建,将我们的TypeNav进行隐藏
-    if (this.$route.path != "/home") {
-      this.show = false;
+    if (this.$route.path != '/home') {
+      this.show = false
     }
   },
   computed: {
@@ -113,14 +113,14 @@ export default {
     //throttle回调函数别用箭头函数,可能会出现上下文的this问题
     //节流
     changeIndex: throttle(function (index) {
-      this.currentIndex = index;
+      this.currentIndex = index
     }, 50),
     //一级分类鼠标移出的事件回调
     leaveShow() {
-      this.currentIndex = -1;
+      this.currentIndex = -1
       //当鼠标离开的时候让商品分类列表进行隐藏
-      if (this.$route.path != "/home") {
-        this.show = false;
+      if (this.$route.path != '/home') {
+        this.show = false
       }
     },
     // 点击链接跳转实现
@@ -129,33 +129,33 @@ export default {
       //利用事件委派存在一些问题:1.点击一定就是a标签么  2.如何获取参数[1,2,3级分类的产品的名字,id]
       //第一个问题:把子节点当中a标签,我加上自定义属性data-categoryName,拥有这个属性的必然就是a标签
       let { categoryname, category1id, category2id, category3id } =
-        e.target.dataset;
+        e.target.dataset
       if (categoryname) {
         //整理路由跳转的参数
-        let location = { name: "Search" };
-        let query = { categoryName: categoryname };
+        let location = { name: 'Search' }
+        let query = { categoryName: categoryname }
         if (category1id) {
-          query.category1Id = category1id;
+          query.category1Id = category1id
         } else if (category2id) {
-          query.category2Id = category2id;
+          query.category2Id = category2id
         } else {
-          query.category3Id = category3id;
+          query.category3Id = category3id
         }
         //判断:如果路由跳转的时候,带有params参数,捎带params传过去
         if (this.$route.params) {
-          location.params = this.$route.params;
+          location.params = this.$route.params
           //整理完参数
-          location.query = query;
+          location.query = query
           //路由跳转
-          this.$router.push(location);
+          this.$router.push(location)
         }
       }
     },
     enterShow() {
-      this.show = true;
+      this.show = true
     },
   },
-};
+}
 </script>
 
 <style scoped lang='less'>

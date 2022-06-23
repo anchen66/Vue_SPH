@@ -5,6 +5,7 @@ import Register from "@/pages/Register";
 import Search from "@/pages/Search";
 import Detail from '@/pages/Detail';
 import AddCartSuccess from '@/pages/AddCartSuccess';
+import ShopCart from '@/pages/ShopCart';
 //路由配置的信息
 export default [
   {
@@ -46,8 +47,16 @@ export default [
   },
   {
     name: 'AddCartSuccess',
-    path: '/addcartsuccess/:skuId/:skuNum',
+    path: '/addcartsuccess',
     component: AddCartSuccess,
+    meta: {
+      show: true,
+    }
+  },
+  {
+    name: 'ShopCart',
+    path: '/shopcart',
+    component: ShopCart,
     meta: {
       show: true,
     }
