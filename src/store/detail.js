@@ -17,7 +17,13 @@ const actions = {
     //服务器写入数据成功之后,并没有返回其他的数据,只是返回了code=200,代表这次操作成功了
     //因为服务器没有返回其余的数据,因此服务器不需要存储返回的数据
     let result = await reqAddOrUpdateShopCart(skuId, skuNum);
-  }
+    //当前的这个函数如果执行返回promise
+    if (result.code == 200) {
+      return '小猪佩奇';
+    } else {
+      return Promise.reject(new Error('faile'));
+    }
+  },
 };
 const mutations = {
   GETGOODINFO(state, goodInfo) {
