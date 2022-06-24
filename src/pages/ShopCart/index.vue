@@ -17,7 +17,8 @@
           <li class="cart-list-con1">
             <input type="checkbox"
               name="chk_list"
-              :checked="cart.isChecked == 1" />
+              :checked="cart.isChecked == 1"
+              @change="updateChecked(cart,$event)" />
           </li>
           <li class="cart-list-con2">
             <img :src="cart.imgUrl" />
@@ -47,7 +48,8 @@
           </li>
           <li class="cart-list-con7">
             <a href="#none"
-              class="sindelet">删除</a>
+              class="sindelet"
+              @click="deleteCartById(cart)">删除</a>
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -84,6 +86,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import throttle from 'lodash/throttle'
 export default {
   name: 'ShopCart',
   mounted() {
@@ -95,7 +98,7 @@ export default {
       this.$store.dispatch('getCartList')
     },
     //修改某一个产品的个数
-    handler(type, disNum, cart) {
+    handler: throttle(async function (type, disNum, cart) {
       //type:为了区分这三个元素
       //disNum:变化量,input最终展示数量
       //cart:点击的是哪一个产品,[身上有id]
@@ -108,13 +111,52 @@ export default {
           //判断产品的个数大于1,才可以传递给服务器-1
           disNum = cart.skuNum > 1 ? -1 : 0
           break
+        case 'change':
+          //用户输入进来的最终量,非法的(带有汉字)
+          if (isNaN(disNum) || disNum < 1) {
+            disNum = 0
+          } else {
+            disNum = parseInt(disNum) - cart.skuNum
+          }
+          // disNum =
+          //   isNaN(disNum) || disNum < 1 ? 0 : parseInt(disNum) - cart.skuNum
+          break
       }
-
       //派发action
-      this.$store.dispatch('addOrUpdateShopCart', {
-        skuId: cart.skuId,
-        skuNum: disNum,
-      })
+      try {
+        //代表的是修改成功
+        await this.$store.dispatch('addOrUpdateShopCart', {
+          skuId: cart.skuId,
+          skuNum: disNum,
+        })
+        //再一次获取服务器的数据进行展示
+        this.getDate()
+      } catch (error) {
+        alert(error.message)
+      }
+    }, 1000),
+    // 删除某一个商品的操作
+    async deleteCartById(cart) {
+      try {
+        // 如果删除成功,再次发送请求获取新的数据进行展示
+        await this.$store.dispatch('deleteCartBySkuId', cart.skuId)
+        this.getDate()
+      } catch (error) {
+        alert(error.message)
+      }
+    },
+    //修改某一个商品的状态
+    async updateChecked(cart, event) {
+      try {
+        let isChecked = event.target.checked ? '1' : '0'
+        await this.$store.dispatch('updateCheckedById', {
+          skuId: cart.skuId,
+          isChecked,
+        })
+        this.getDate()
+      } catch (error) {
+        alert(error.message)
+      }
     },
   },
   computed: {
