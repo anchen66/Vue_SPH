@@ -32,3 +32,15 @@ export const reqDeleteCartById = (skuId) => requests({url: `cart/deleteCart/${sk
 
 //切换商品状态接口/api/cart/checkCart/{skuID}/{isChecked} GET
 export const reqUpdateCheckedById = (skuId, isChecked) => requests({url: `cart/checkCart/${skuId}/${isChecked}`, method: 'get'});
+
+//获取验证码 /api/user/passport/sendCode/{phone} get
+export const reqGetCode = (phone) => requests({url: `user/passport/sendCode/${phone}`, method: 'get'});
+
+//注册账号 /api/user/passport/register post phone,code,password
+export const reqUserRegister = (data) => requests({url: `user/passport/register`, method: 'post', data});
+
+//登录账号 /api/user/passport/login  POST  phone,password
+export const reqUserLogin = (data) => requests({url: 'user/passport/login', method: 'post', data});
+
+//获取用户信息[需要带着用户的token向服务器要用户的信息]   http://182.92.128.115/api/user/passport/auth/getUserInfo   grt
+export const reqUserInfo = () => requests({url: 'user/passport/auth/getUserInfo', method: 'get'});

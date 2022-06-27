@@ -5,10 +5,17 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <!-- 没有用户名 :未登录 -->
+          <p v-if="!userName">
             <span>请</span>
             <router-link to="/login">登录</router-link>
-            <router-link to="/register" class="register">免费注册</router-link>
+            <router-link to="/register"
+              class="register">免费注册</router-link>
+          </p>
+          <!-- 有用户名,已登录 -->
+          <p v-if="userName">
+            <a>{{userName}}</a>
+            <a class="register">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -26,24 +33,23 @@
     <!--头部第二行 搜索区域-->
     <div class="bottom">
       <h1 class="logoArea">
-        <router-link class="logo" to="/home">
-          <img src="./images/logo.png" alt="" />
+        <router-link class="logo"
+          to="/home">
+          <img src="./images/logo.png"
+            alt="" />
         </router-link>
       </h1>
       <div class="searchArea">
-        <form action="###" class="searchForm">
-          <input
-            type="text"
+        <form action="###"
+          class="searchForm">
+          <input type="text"
             id="autocomplete"
             class="input-error input-xxlarge"
             v-model="keyword"
-            @keyup.enter="goSearch"
-          />
-          <button
-            class="sui-btn btn-xlarge btn-danger"
+            @keyup.enter="goSearch" />
+          <button class="sui-btn btn-xlarge btn-danger"
             type="button"
-            @click="goSearch"
-          >
+            @click="goSearch">
             搜索
           </button>
         </form>
@@ -54,11 +60,11 @@
 
 <script>
 export default {
-  name: "Header",
+  name: 'Header',
   data() {
     return {
-      keyword: "",
-    };
+      keyword: '',
+    }
   },
   methods: {
     //搜索按钮的回调函数:需要向search路由进行跳转
@@ -78,21 +84,27 @@ export default {
       //判断.如果搜索的时候有query参数,也一起带过去
       if (this.$route.query) {
         let location = {
-          name: "Search",
+          name: 'Search',
           params: { keyword: this.keyword || undefined },
-        };
-        location.query = this.$route.query;
-        this.$router.push(location);
+        }
+        location.query = this.$route.query
+        this.$router.push(location)
       }
     },
   },
   mounted() {
     //通过全局事件总线清楚关键字
-    this.$bus.$on("clear", () => {
-      this.keyword = "";
-    });
+    this.$bus.$on('clear', () => {
+      this.keyword = ''
+    })
   },
-};
+  computed: {
+    //用户名信息
+    userName() {
+      return this.$store.state.user.userInfo.name
+    },
+  },
+}
 </script>
 
 

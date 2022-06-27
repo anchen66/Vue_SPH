@@ -19,7 +19,7 @@ export default [
     path: '/login',
     component: Login,
     meta: {
-      show: true,
+      show: false,
     }
   },
   {

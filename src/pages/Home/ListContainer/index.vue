@@ -79,12 +79,12 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 export default {
-  name: "",
+  name: '',
   mounted() {
     //派发action:通过Vuex发起ajax请求,将数据存储在仓库中
-    this.$store.dispatch("getBannerList");
+    this.$store.dispatch('getBannerList')
     //在new Swiper实例之前,页面中结构必须得有[现在把new Swiper实例放在mounted这里发现不行]
     //因为dispatch当中涉及到异步语句,导致v-for遍历的时候结构还没有完全加载,所以没有用
 
@@ -109,7 +109,7 @@ export default {
       bannerList: (state) => state.home.bannerList,
     }),
   },
-};
+}
 </script>
 
 <style scoped lang='less'>
@@ -184,7 +184,7 @@ export default {
           width: 25%;
 
           .list-item {
-            background-image: url(./images/icons.png);
+            background-image: url(~@/assets/images/icons.png);
             width: 61px;
             height: 40px;
             display: block;
