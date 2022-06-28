@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    //#region
+    // let s = 'MCMXCIV';
+    // var romanToInt = function (s) {
+    //   let num = 0;
+    //   let arr = s.split('');
+    //   for (let i = arr.length - 1; i >= 0; i--) {
+    //     switch (arr[i]) {
+    //       case 'M':
+    //         if (arr[i - 1] == 'C') {
+    //           num += 900;
+    //           i--;
+    //         } else {
+    //           num += 1000;
+    //         }
+    //         break;
+    //       case 'D':
+    //         if (arr[i - 1] == 'C') {
+    //           num += 400;
+    //           i--;
+    //         } else {
+    //           num += 500;
+    //         }
+    //         break;
+    //       case 'C':
+    //         if (arr[i - 1] == 'X') {
+    //           num += 90;
+    //           i--;
+    //         } else {
+    //           num += 100;
+    //         }
+    //         break;
+    //       case 'L':
+    //         if (arr[i - 1] == 'X') {
+    //           num += 40;
+    //           i--;
+    //         } else {
+    //           num += 50;
+    //         }
+    //         break;
+    //       case 'X':
+    //         if (arr[i - 1] == 'I') {
+    //           num += 9;
+    //           i--;
+    //         } else {
+    //           num += 10;
+    //         }
+    //         break;
+    //       case 'V':
+    //         if (arr[i - 1] == 'I') {
+    //           num += 4;
+    //           i--;
+    //         } else {
+    //           num += 5;
+    //         }
+    //         break;
+    //       case 'I':
+    //         num += 1;
+    //         break;
+    //     }
+    //   }
+    //   return num;
+    // };
+    // romanToInt(s)
+
+
+    // var longestCommonPrefix = function (strs) {
+    //   let arr = [];
+    //   let str = '';
+    //   for (let i = 0; i < strs[0].length; i++) {
+    //     for (let j = 0; j < strs.length; j++) {
+    //       arr[j] = strs[j].slice(0, i + 1);
+    //     }
+    //     if ([...new Set(arr)].length == 1) {
+    //       str = arr[0];
+    //     } else {
+    //       return str;
+    //     }
+    //   }
+    //   return str
+    // };
+    // console.log(longestCommonPrefix(["flower", "flow", "flight"]));
+
+
+    // let s = "{[]}";
+    // var isValid = function (s) {
+    //   let arr = [];
+    //   for (let i = 0; i < s.length; i++) {
+    //     switch (s[i]) {
+    //       case '{':
+    //         arr.push('}');
+    //         break;
+    //       case '(':
+    //         arr.push(')');
+    //         break;
+    //       case '[':
+    //         arr.push(']');
+    //         break;
+    //       default:
+    //         if (s[i] == arr[arr.length - 1]) {
+    //           arr.pop();
+    //         } else {
+    //           return false;
+    //         }
+    //         break;
+    //     }
+    //   }
+    //   return arr.length == 0;
+    // };
+    // console.log(isValid(s));
+    //#endregion
+
+    let nums = [1, 1, 2];
+    var removeDuplicates = function (nums) {
+      for (let i = 1; i < nums.length; i++) {
+        if (nums[i] == nums[i - 1]) {
+          nums.splice(i, 1);
+          i--;
+        }
+      }
+      return `${nums.length}, nums = [${nums}]`;
+    };
+    console.log(removeDuplicates(nums));
+  </script>
+</body>
+
+</html>

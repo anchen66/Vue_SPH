@@ -44,3 +44,6 @@ export const reqUserLogin = (data) => requests({url: 'user/passport/login', meth
 
 //获取用户信息[需要带着用户的token向服务器要用户的信息]   http://182.92.128.115/api/user/passport/auth/getUserInfo   grt
 export const reqUserInfo = () => requests({url: 'user/passport/auth/getUserInfo', method: 'get'});
+
+//退出登录 /api/user/passport/logout get
+export const reqLogout = () => requests({url: 'user/passport/logout', method: 'get'});

@@ -28,7 +28,7 @@ export default {
     //派发action,获取 floor组件的数组
     this.$store.dispatch('getFloorList')
     //获取用户信息在首页展示,所有页面都要,移至app组件试试
-    this.$store.dispatch('getUserInfo')
+    // this.$store.dispatch('getUserInfo')
   },
   computed: {
     ...mapState({
