@@ -15,8 +15,9 @@ import '@/mock/mockServe';
 //引入swiper样式
 import 'swiper/css/swiper.min.css';
 
-
-
+//统一接口api文件夹里面全部请求函数
+//统一引入
+import * as API from '@/api';
 
 //第一个参数:全局组件的名字;第二个参数:哪一个组件
 Vue.component(TypeNav.name, TypeNav);
@@ -29,6 +30,8 @@ new Vue({
   //全局事件总线$bus的配置
   beforeCreate() {
     Vue.prototype.$bus = this;
+    //全局引用API
+    Vue.prototype.$API = API;
   },
   //注册路由:底下的写法是KV一致省略V[router小写r]
   router,

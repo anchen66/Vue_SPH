@@ -25,25 +25,34 @@ export const reqGoodsInfo = (skuId) => requests({url: `/item/${skuId}`, method: 
 export const reqAddOrUpdateShopCart = (skuId, skuNum) => requests({url: `/cart/addToCart/${skuId}/${skuNum}`, method: 'post'});
 
 //获取购物车列表数据接口/api/cart/cartList get
-export const reqCartList = () => requests({url: 'cart/cartList', method: 'get'});
+export const reqCartList = () => requests({url: '/cart/cartList', method: 'get'});
 
 //删除购物车商品接口  /api/cart/deleteCart/{skuId}   DELETE
-export const reqDeleteCartById = (skuId) => requests({url: `cart/deleteCart/${skuId}`, method: 'delete'});
+export const reqDeleteCartById = (skuId) => requests({url: `/cart/deleteCart/${skuId}`, method: 'delete'});
 
 //切换商品状态接口/api/cart/checkCart/{skuID}/{isChecked} GET
-export const reqUpdateCheckedById = (skuId, isChecked) => requests({url: `cart/checkCart/${skuId}/${isChecked}`, method: 'get'});
+export const reqUpdateCheckedById = (skuId, isChecked) => requests({url: `/cart/checkCart/${skuId}/${isChecked}`, method: 'get'});
 
 //获取验证码 /api/user/passport/sendCode/{phone} get
-export const reqGetCode = (phone) => requests({url: `user/passport/sendCode/${phone}`, method: 'get'});
+export const reqGetCode = (phone) => requests({url: `/user/passport/sendCode/${phone}`, method: 'get'});
 
 //注册账号 /api/user/passport/register post phone,code,password
-export const reqUserRegister = (data) => requests({url: `user/passport/register`, method: 'post', data});
+export const reqUserRegister = (data) => requests({url: `/user/passport/register`, method: 'post', data});
 
 //登录账号 /api/user/passport/login  POST  phone,password
-export const reqUserLogin = (data) => requests({url: 'user/passport/login', method: 'post', data});
+export const reqUserLogin = (data) => requests({url: '/user/passport/login', method: 'post', data});
 
-//获取用户信息[需要带着用户的token向服务器要用户的信息]   http://182.92.128.115/api/user/passport/auth/getUserInfo   grt
-export const reqUserInfo = () => requests({url: 'user/passport/auth/getUserInfo', method: 'get'});
+//获取用户信息[需要带着用户的token向服务器要用户的信息]  /api/user/passport/auth/getUserInfo   grt
+export const reqUserInfo = () => requests({url: '/user/passport/auth/getUserInfo', method: 'get'});
 
 //退出登录 /api/user/passport/logout get
-export const reqLogout = () => requests({url: 'user/passport/logout', method: 'get'});
+export const reqLogout = () => requests({url: '/user/passport/logout', method: 'get'});
+
+//获取用户地址信息/api/user/userAddress/auth/findUserAddressList
+export const reqAdressInfo = () => requests({url: '/user/userAddress/auth/findUserAddressList', method: 'get'});
+
+//获取订单交易信息 /api/order/auth/trade get
+export const reqOrderInfo = () => requests({url: '/order/auth/trade', method: 'get'});
+
+//提交商品订单 /api/order/auth/submitOrder?tradeNo={tradeNo}  POST
+export const reqSubmitOrder = (tradeNo, data) => requests({url: `/order/auth/submitOrder?tradeNo=${tradeNo}`, data, method: 'post'});

@@ -52,7 +52,7 @@ router.beforeEach(async (to, from, next) => {
   let name = store.state.user.userInfo.name;
   if (token) {
     //用户已经登录了,还想去login,想屁吃
-    if (to.path == '/login') {
+    if (to.path == '/login' || to.path == '/register') {
       next('/home');
     } else {
       //登陆了但是去的不是login[home,search,detail...]
