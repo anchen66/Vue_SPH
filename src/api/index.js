@@ -54,5 +54,14 @@ export const reqAdressInfo = () => requests({url: '/user/userAddress/auth/findUs
 //获取订单交易信息 /api/order/auth/trade get
 export const reqOrderInfo = () => requests({url: '/order/auth/trade', method: 'get'});
 
-//提交商品订单 /api/order/auth/submitOrder?tradeNo={tradeNo}  POST
-export const reqSubmitOrder = (tradeNo, data) => requests({url: `/order/auth/submitOrder?tradeNo=${tradeNo}`, data, method: 'post'});
+//提交商品订单 /api/order/auth/submitOrder?tradeNo={tradeNo}  POST    //后面自己mock数据
+export const reqSubmitOrder = (tradeNo, data) => mockRequest.get('/submit');
+
+//获取订单支付信息 /api/payment/weixin/createNative/{orderId}   get //后面自己mock数据
+export const reqPayInfo = (orderId) => mockRequest.get('/trade');
+
+//获取支付订单状态 /api/payment/weixin/queryPayStatus/{orderId} get
+export const reqPayStatus = (orderId) => mockRequest.get('/pay');
+
+//获取我的订单列表  /api/order/auth/{page}/{limit} GET
+export const reqMyorderList = (page, limit) => requests({url: `/order/auth/${page}/${limit}`, method: 'get'});

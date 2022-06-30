@@ -20,13 +20,21 @@
                 <span></span>
                 <input type="text"
                   placeholder="邮箱/用户名/手机号"
-                  v-model="phone">
+                  v-model="phone"
+                  name="phone"
+                  v-validate="{ required: true, regex: /^1\d{10}$/ }"
+                  :class="{ invalid: errors.has('phone') }">
+                <b class="error-msg">{{ errors.first("phone") }}</b>
               </div>
               <div class="input-text clearFix">
                 <span class="pwd"></span>
                 <input type="password"
                   placeholder="请输入密码"
-                  v-model="password">
+                  v-model="password"
+                  name="password"
+                  v-validate="{ required: true, regex: /^[0-9A-Za-z]{6,18}$/ }"
+                  :class="{ invalid: errors.has('password') }">
+                <b class="error-msg">{{ errors.first("password") }}</b>
               </div>
               <div class="setting clearFix">
                 <label class="checkbox inline">
@@ -91,15 +99,19 @@ export default {
   methods: {
     //登录的回调函数
     async userLogin() {
-      try {
-        const { phone, password } = this
-        if (phone && password) {
+      const success = await this.$validator.validateAll() //全部表单验证
+      //全部表单验证成功之后,再向服务器发请求,进行注册
+      //只要又一个表单没有成功,不会发送请求
+      if (success) {
+        try {
+          const { phone, password } = this
           await this.$store.dispatch('userLogin', { phone, password })
-          //跳转到home首页
-          this.$router.push('/home')
+          //判断路由当中是否包含query参数,有就跳到query参数指定的路由,没有跳到home
+          let toPath = this.$route.query.redirect || '/home'
+          this.$router.push(toPath)
+        } catch (error) {
+          alert(error.message)
         }
-      } catch (error) {
-        alert(error.message)
       }
     },
   },
@@ -171,6 +183,7 @@ export default {
 
           .input-text {
             margin-bottom: 16px;
+            height: 50px;
 
             span {
               float: left;

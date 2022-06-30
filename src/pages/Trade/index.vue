@@ -93,21 +93,22 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn"
-        to="/pay">提交订单</router-link>
+      <a class="subBtn"
+        @click="submitOrder">提交订单</a>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import { reqSubmitOrder } from '@/api'
 export default {
   name: 'Trade',
   data() {
     return {
       //收集买家的留言信息
       msg: '',
+      //订单号
+      orderId: '',
     }
   },
   mounted() {
@@ -131,6 +132,30 @@ export default {
       //全部的isDefault为0
       addressInfo.forEach((item) => (item.isDefault = 0))
       address.isDefault = 1
+    },
+    //提交订单
+    async submitOrder() {
+      //交易编码
+      let { readeNo } = this.orderInfo
+      //带的其余6个参数
+      let data = {
+        consignee: this.userDefaultAddress.consignee, //最终收件人的名字
+        consigneeTel: this.userDefaultAddress.phoneNum, //最终收件人的手机号
+        deliveryAddress: this.userDefaultAddress.fullAddress, //收件人的地址
+        paymentWay: 'ONLINE', //支付的方式
+        orderComment: this.msg, //买家的留言信息
+        orderDetailList: this.orderInfo.detailArrayList, //商品清单
+      }
+      //需要带参数的
+      let result = await this.$API.reqSubmitOrder(readeNo, data)
+      //提交订单成功
+      if (result.code == 200) {
+        this.orderId = result.data
+        //路由跳转+路由传参
+        this.$router.push('/pay?orderId=' + this.orderId)
+      } else {
+        alert(result.data)
+      }
     },
   },
 }

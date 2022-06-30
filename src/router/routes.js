@@ -1,32 +1,22 @@
-//引入插件
-import Home from "@/pages/Home";
-import Login from "@/pages/Login";
-import Register from "@/pages/Register";
-import Search from "@/pages/Search";
-import Detail from '@/pages/Detail';
-import AddCartSuccess from '@/pages/AddCartSuccess';
-import ShopCart from '@/pages/ShopCart';
-import Trade from '@/pages/Trade';
-import Pay from '@/pages/Pay';
 //路由配置的信息
 export default [
   {
     path: '/home',
-    component: Home,
+    component: () => import("@/pages/Home"),
     meta: {
       show: true,
     }
   },
   {
     path: '/login',
-    component: Login,
+    component: () => import("@/pages/Login"),
     meta: {
       show: false,
     }
   },
   {
     path: '/register',
-    component: Register,
+    component: () => import("@/pages/Register"),
     meta: {
       show: false,
     }
@@ -35,14 +25,14 @@ export default [
     //params传参
     name: 'Search',
     path: '/search/:keyword?',//路径里面的?意味着params这个参数可传可不传
-    component: Search,
+    component: () => import("@/pages/Search"),
     meta: {
       show: true,
     }
   },
   {
     path: '/detail/:skuId',
-    component: Detail,
+    component: () => import('@/pages/Detail'),
     meta: {
       show: true,
     }
@@ -50,7 +40,7 @@ export default [
   {
     name: 'AddCartSuccess',
     path: '/addcartsuccess',
-    component: AddCartSuccess,
+    component: () => import('@/pages/AddCartSuccess'),
     meta: {
       show: true,
     }
@@ -58,7 +48,7 @@ export default [
   {
     name: 'ShopCart',
     path: '/shopcart',
-    component: ShopCart,
+    component: () => import('@/pages/ShopCart'),
     meta: {
       show: true,
     }
@@ -66,17 +56,60 @@ export default [
   {
     name: 'Trade',
     path: '/trade',
-    component: Trade,
+    component: () => import('@/pages/Trade'),
+    meta: {
+      show: true,
+    },
+    //路由独享守卫
+    beforeEnter: (to, from, next) => {
+      if (from.path == '/shopcart') {
+        next();
+      } else {
+        next(false);
+      }
+    }
+  },
+  {
+    path: '/pay',
+    component: () => import('@/pages/Pay'),
+    meta: {
+      show: true,
+    },
+    beforeEnter: (to, from, next) => {
+      if (from.path == '/trade') {
+        next();
+      } else {
+        next(false);
+      }
+    }
+  },
+  {
+    path: '/paysuccess',
+    component: () => import('@/pages/PaySuccess'),
     meta: {
       show: true,
     }
   },
   {
-    path: '/pay',
-    component: Pay,
+    path: '/center',
+    component: () => import('@/pages/Center'),
     meta: {
       show: true,
-    }
+    },
+    children: [
+      {
+        path: 'myorder',
+        component: () => import('@/pages/Center/MyOrder'),
+      },
+      {
+        path: 'grouporder',
+        component: () => import('@/pages/Center/GroupOrder')
+      },
+      {
+        path: '/center',
+        redirect: '/center/myorder'
+      }
+    ]
   },
   //重定向,在项目跑起来的时候,访问/,立马让他定向到首页
   {

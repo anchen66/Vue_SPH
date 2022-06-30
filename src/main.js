@@ -18,12 +18,31 @@ import 'swiper/css/swiper.min.css';
 //统一接口api文件夹里面全部请求函数
 //统一引入
 import * as API from '@/api';
+//按需引入eleUi插件
+import {Button, MessageBox} from 'element-ui';
+//引入lazyload插件
+import VueLazyload from 'vue-lazyload';
+//引入图片
+import Abc from '@/assets/images/lazyload.gif';
+//引入表单校验插件
+import '@/plugins/validate';
+
 
 //第一个参数:全局组件的名字;第二个参数:哪一个组件
 Vue.component(TypeNav.name, TypeNav);
 Vue.component(Carousel.name, Carousel);
 Vue.component(Pagination.name, Pagination);
+//注册全局组件
+Vue.component(Button.name, Button);
+//ElementUI注册组建的时候,还有一种写法,挂在原型上
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
 Vue.config.productionTip = false;
+
+Vue.use(VueLazyload, {
+  loading: Abc,
+  error: Abc,
+});
 
 new Vue({
   render: h => h(App),
